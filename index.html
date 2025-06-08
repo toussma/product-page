@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>صفحة المنتج</title>
+  <style>
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: #f0f4f8;
+      color: #223344;
+      line-height: 1.6;
+      direction: rtl;
+      -webkit-font-smoothing: antialiased;
+    }
+    a {
+      color: #28a745;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover {
+      color: #19692c;
+      text-decoration: underline;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(90deg, #1e3c72, #2a5298);
+      color: #fff;
+      text-align: center;
+      padding: 3rem 1rem 4rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      border-bottom-left-radius: 40px;
+      border-bottom-right-radius: 40px;
+    }
+       .radio-group {
+      margin-top: 6px;
+    }
+    .radio-group label {
+      font-weight: normal;
+      margin-left: 0.5rem;
+    }
+    .price-display {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: white;
+      border-radius: 6px;
+      box-shadow: 0 0 8px #ccc;
+    }
+    .price-display div {
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+    }
+    header h1 {
+      font-size: 2.8rem;
+      margin-bottom: 0.3rem;
+      letter-spacing: 1.5px;
+      font-weight: 900;
+    }
+    header p {
+      font-size: 1.2rem;
+      font-weight: 600;
+      opacity: 0.85;
+    }
+
+    /* Hero & Slider */
+    .hero {
+      max-width: 620px;
+      margin: -3rem auto 2rem;
+      padding: 1rem 1.5rem 3rem;
+      background: white;
+      border-radius: 30px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      position: relative;
+      z-index: 5;
+    }
+    .hero h2 {
+      margin-top: 1.8rem;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #2a5298;
+      letter-spacing: 1.1px;
+    }
+    .slider {
+      position: relative;
+      overflow: hidden;
+      border-radius: 25px;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.12);
+      user-select: none;
+    }
+    .slider img.slide {
+      width: 100%;
+      height: 350px;
+      object-fit: cover;
+      display: none;
+      border-radius: 25px;
+      transition: opacity 0.5s ease-in-out;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.15);
+    }
+    .slider img.slide.active {
+      display: block;
+      opacity: 1;
+    }
+    .slider button.prev,
+    .slider button.next {
+      position: absolute;
+      top: 50%;
+      background: rgba(255, 255, 255, 0.85);
+      border: none;
+      color: #2a5298;
+      font-size: 2.5rem;
+      padding: 0 0.7rem;
+      cursor: pointer;
+      user-select: none;
+      transform: translateY(-50%);
+      border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(42,82,152,0.25);
+      transition: background-color 0.3s ease;
+    }
+    .slider button.prev:hover,
+    .slider button.next:hover {
+      background: #2a5298;
+      color: #fff;
+    }
+    .slider button.prev {
+      right: 10px;
+    }
+    .slider button.next {
+      left: 10px;
+    }
+
+    /* Sections common style */
+    section {
+      padding: 2rem 1.5rem;
+      max-width: 620px;
+      margin: 2rem auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    }
+    section h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #1e3c72;
+      font-weight: 800;
+      border-bottom: 3px solid #28a745;
+      display: inline-block;
+      padding-bottom: 6px;
+    }
+
+    /* Benefits */
+    .benefits ul {
+      list-style: none;
+      padding: 0;
+    }
+    .benefits li {
+      font-size: 1.1rem;
+      margin: 0.8rem 0;
+      padding-right: 1.3rem;
+      position: relative;
+      color: #225522;
+      font-weight: 600;
+    }
+    .benefits li::before {
+      content: '✔';
+      color: #28a745;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      font-weight: 900;
+    }
+
+    /* Testimonials */
+    .testimonials p {
+      font-style: italic;
+      color: #555;
+      margin: 0.8rem 0;
+      border-right: 4px solid #28a745;
+      padding-right: 1rem;
+      font-weight: 600;
+    }
+
+    /* Details */
+    .details p {
+      font-size: 1.1rem;
+      color: #333;
+    }
+
+    /* Order Form */
+    .order-form form {
+      display: flex;
+      flex-direction: column;
+    }
+    form input, form textarea, form select {
+      border: 2px solid #ccc;
+      padding: 1rem;
+      font-size: 1.1rem;
+      border-radius: 12px;
+      margin-bottom: 1.2rem;
+      transition: border-color 0.3s ease;
+    }
+    form input:focus, form textarea:focus, form select:focus {
+      outline: none;
+      border-color: #28a745;
+      box-shadow: 0 0 8px rgba(40, 167, 69, 0.4);
+      background: #f5fff5;
+    }
+    form textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    form button {
+      background: linear-gradient(90deg, #28a745, #19692c);
+      border: none;
+      color: white;
+      font-size: 1.3rem;
+      padding: 1rem;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 900;
+      box-shadow: 0 6px 15px rgba(40, 167, 69, 0.5);
+      transition: background 0.4s ease;
+    }
+    form button:hover {
+      background: linear-gradient(90deg, #19692c, #28a745);
+      box-shadow: 0 8px 20px rgba(25, 105, 44, 0.8);
+    }
+
+    /* Contact */
+    .contact p {
+      font-size: 1.1rem;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1rem 1rem 2rem;
+      font-size: 0.9rem;
+      color: #777;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      header h1 {
+        font-size: 2rem;
+      }
+      header p {
+        font-size: 1rem;
+      }
+      .hero {
+        margin: -2rem 1rem 1rem;
+        padding: 1rem 1rem 2rem;
+      }
+      .hero h2 {
+        font-size: 1.6rem;
+      }
+      section {
+        margin: 1.5rem 1rem;
+        padding: 1.5rem 1rem;
+      }
+      section h3 {
+        font-size: 1.4rem;
+      }
+      form input, form textarea, form select {
+        font-size: 1rem;
+        padding: 0.8rem;
+      }
+      form button {
+        font-size: 1.1rem;
+        padding: 0.9rem;
+      }
+      .slider img.slide {
+        height: 250px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+  <h1>طريطو قابل للطي</h1>
+  <p>بسعر 590 الف فقط</p>
+  <p>اشترِ 2 واحصل على <span style="color: red;">400 DA</span> تخفيض 😊</p>
+</header>
+
+  <section class="hero">
+    <div class="slider">
+      <img src="product1.jpg" class="slide active" alt="صورة المنتج 1" />
+      <img src="product2.jpg" class="slide" alt="صورة المنتج 2" />
+      <img src="product3.jpg" class="slide" alt="صورة المنتج 3" />
+      <button class="prev">&#10094;</button>
+      <button class="next">&#10095;</button>
+    </div>
+
+    <!-- Order Form -->
+    <section class="order-form" style="margin-top: 2rem;">
+      <h3>اطلب الآن</h3>
+     <form id="orderForm" action="https://formsubmit.co/34e15183b8c6a37d73b2e0fe28f29fe5" method="POST">
+         <input type="hidden" name="_next" value="https://toussma.github.io/product-page/thank-you.html">
+  <input type="hidden" name="_captcha" value="false">
+    <label for="fullname">الاسم الكامل</label>
+    <input type="text" id="fullname" name="name" placeholder="الاسم الكامل" required />
+
+    <label for="phone">رقم الهاتف</label>
+    <input type="tel" id="phone" name="phone" placeholder="رقم الهاتف"  pattern="[0-9]{10}" maxlength="10" minlength="10" required />
+
+    <label for="wilaya">اختر الولاية</label>
+    <select id="wilaya" name="wilaya" required>
+      <option value="" disabled selected>اختر الولاية</option>
+     <option value="adrar">أدرار</option>
+<option value="chlef">الشلف</option>
+<option value="laghouat">الأغواط</option>
+<option value="oumelbouaghi">أم البواقي</option>
+<option value="batna">باتنة</option>
+<option value="bejaia">بجاية</option>
+<option value="biskra">بسكرة</option>
+<option value="bechar">بشار</option>
+<option value="blida">البليدة</option>
+<option value="bouira">البويرة</option>
+<option value="tamanrasset">تمنراست</option>
+<option value="tebessa">تبسة</option>
+<option value="tlemcen">تلمسان</option>
+<option value="tiaret">تيارت</option>
+<option value="tiziouzou">تيزي وزو</option>
+<option value="algiers">الجزائر</option>
+<option value="djelfa">الجلفة</option>
+<option value="jijel">جيجل</option>
+<option value="setif">سطيف</option>
+<option value="saida">سعيدة</option>
+<option value="skikda">سكيكدة</option>
+<option value="sidibelabbes">سيدي بلعباس</option>
+<option value="annaba">عنابة</option>
+<option value="guelma">قالمة</option>
+<option value="constantine">قسنطينة</option>
+<option value="medea">المدية</option>
+<option value="mostaganem">مستغانم</option>
+<option value="msila">المسيلة</option>
+<option value="mascara">معسكر</option>
+<option value="ouargla">ورقلة</option>
+<option value="oran">وهران</option>
+<option value="elbayadh">البيض</option>
+<option value="illizi">إليزي</option>
+<option value="bordjbouarreridj">برج بوعريريج</option>
+<option value="boumerdes">بومرداس</option>
+<option value="eltaref">الطارف</option>
+<option value="tindouf">تندوف</option>
+<option value="tissemsilt">تيسمسيلت</option>
+<option value="eloued">الوادي</option>
+<option value="khenchela">خنشلة</option>
+<option value="soukahras">سوق أهراس</option>
+<option value="tipaza">تيبازة</option>
+<option value="mila">ميلة</option>
+<option value="aindefla">عين الدفلى</option>
+<option value="naama">النعامة</option>
+<option value="aintemouchent">عين تموشنت</option>
+<option value="ghardaia">غرداية</option>
+<option value="relizane">غليزان</option>
+<option value="timimoun">تيميمون</option>
+<option value="bordjbadjimokhtar">برج باجي مختار</option>
+<option value="ouleddjellal">أولاد جلال</option>
+<option value="beniabbes">بني عباس</option>
+<option value="insalah">عين صالح</option>
+<option value="inguezzam">عين قزام</option>
+<option value="touggourt">تقرت</option>
+<option value="djanet">جانت</option>
+<option value="elmghair">المغير</option>
+<option value="elmenia">المنيعة</option>
+    </select>
+     <label for="quantity">الكمية</label>
+      <input type="text" id="quantity" name="quantity" inputmode="numeric"
+       pattern="^[1-9][0-9]*$" value="1" required />
+
+    <label>مكان التوصيل</label>
+    <div class="radio-group">
+      <input type="radio" id="home" name="delivery_place" value="home" required />
+      <label for="home">المنزل</label>
+
+      <input type="radio" id="office" name="delivery_place" value="office" />
+      <label for="office">(noest exp)المكتب</label>
+    </div>
+
+    <div class="price-display">
+      <div>سعر المنتج: <span id="productPrice">5900 د.ج</span></div>
+      <div>سعر التوصيل: <span id="shippingPrice">0 د.ج</span></div>
+      <div><strong>السعر الإجمالي: <span id="totalPrice">5900 د.ج</span></strong></div>
+    </div>
+
+    <button type="submit">إرسال الطلب</button>
+  </form>
+
+<script>
+  (function() {
+    // Shipping prices based on Wilaya and delivery place (home/office)
+   const shippingPrices = {
+  adrar: { home: 1100, office: 550 },
+  chlef: { home: 650, office: 350 },
+  laghouat: { home: 800, office: 350 },
+  oumelbouaghi: { home: 650, office: 350 },
+  batna: { home: 650, office: 350 },
+  bejaia: { home: 600, office: 350 },
+  biskra: { home: 700, office: 350 },
+  bechar: { home: 900, office: 500 },
+  blida: { home: 450, office: 450 },
+  bouira: { home: 600, office: 350 },
+  tamanrasset: { home: 1500, office: 700 },
+  tebessa: { home: 700, office: 350 },
+  tlemcen: { home: 650, office: 350 },
+  tiaret: { home: 700, office: 350 },
+  tiziouzou: { home: 600, office: 350 },
+  algiers: { home: 300, office: 300 },
+  djelfa: { home: 800, office: 450 },
+  jijel: { home: 650, office: 350 },
+  setif: { home: 650, office: 350 },
+  saida: { home: 700, office: 350 },
+  skikda: { home: 650, office: 350 },
+  sidibelabbes: { home: 650, office: 350 },
+  annaba: { home: 650, office: 350 },
+  guelma: { home: 700, office: 350 },
+  constantine: { home: 650, office: 350 },
+  medea: { home: 600, office: 350 },
+  mostaganem: { home: 650, office: 350 },
+  msila: { home: 700, office: 350 },
+  mascara: { home: 650, office: 350 },
+  ouargla: { home: 900, office: 450 },
+  oran: { home: 600, office: 350 },
+  elbayadh: { home: 1000, office: 800 },
+  illizi: { home: 10000, office: 10000 },
+  bordjbouarreridj: { home: 650, office: 350 },
+  boumerdes: { home: 400, office: 400 },
+  eltaref: { home: 700, office: 350 },
+  tindouf: { home: 1300, office: 1300 },
+  tissemsilt: { home: 650, office: 350 },
+  eloued: { home: 900, office: 500 },
+  khenchela: { home: 700, office: 350 },
+  soukahras: { home: 750, office: 400 },
+  tipaza: { home: 400, office: 300 },
+  mila: { home: 700, office: 400 },
+  aindefla: { home: 650, office: 350 },
+  naama: { home: 900, office: 450 },
+  aintemouchent: { home: 650, office: 400 },
+  ghardaia: { home: 800, office: 450 },
+  relizane: { home: 700, office: 400 },
+  timimoun: { home: 1200, office: 750 },
+  bordjbadjimokhtar: { home: 10000, office: 10000 },
+  ouleddjellal: { home: 800, office: 550 },
+  beniabbes: { home: 1000, office: 1000 },
+  insalah: { home: 1600, office: 900 },
+  inguezzam: { home: 10000, office: 10000 },
+  touggourt: { home: 800, office: 450 },
+  djanet: { home: 10000, office: 10000 },
+  elmghair: { home: 900, office: 500 },
+  elmenia: { home: 900, office: 550 }
+};
+
+
+    const basePrice = 5900;
+    const discountedPrice = 5700;
+    const productPriceSpan = document.getElementById("productPrice");
+    const shippingPriceSpan = document.getElementById("shippingPrice");
+    const totalPriceSpan = document.getElementById("totalPrice");
+    const wilayaSelect = document.getElementById("wilaya");
+    const deliveryRadios = document.querySelectorAll("input[name='delivery_place']");
+    const quantityInput = document.getElementById("quantity");
+ 
+
+    // Display fixed product price
+
+     function updatePrices() {
+    const wilaya = wilayaSelect.value;
+    const deliveryPlace = document.querySelector("input[name='delivery_place']:checked");
+    const quantity = parseInt(quantityInput.value) || 1;
+
+    // Apply discount
+    const unitPrice = quantity >= 2 ? discountedPrice : basePrice;
+
+    // Update unit product price text
+    productPriceSpan.textContent = `${unitPrice * quantity} د.ج`;
+
+    // Shipping
+    let shipping = 0;
+    if (wilaya && deliveryPlace) {
+      shipping = shippingPrices[wilaya][deliveryPlace.value] || 0;
+    }
+
+    // Total
+    const total = unitPrice * quantity + shipping;
+    shippingPriceSpan.textContent = `${shipping} د.ج`;
+    totalPriceSpan.textContent = `${total} د.ج`;
+  }
+
+  // Event listeners
+  wilayaSelect.addEventListener("change", updatePrices);
+  deliveryRadios.forEach(r => r.addEventListener("change", updatePrices));
+  quantityInput.addEventListener("input", updatePrices);
+
+    // Initialize on page load in case defaults set
+    updatePrices();
+  })();
+</script>
+
+
+    </section>
+  </section>
+
+  <section class="benefits">
+    <h3>لماذا نحن؟</h3>
+    <ul>
+      <li>جودة عالية</li>
+      <li>سعر منافس</li>
+      <li>دعم فني ممتاز</li>
+      <li>توصيل سريع وآمن</li>
+    </ul>
+  </section>
+
+  <section class="details">
+  <h3>تفاصيل المنتج</h3>
+  <p>
+    🔷 <strong>الطريطو العالي – جودة وأناقة</strong><br>
+    • هيكل مصنوع من الإينوكس المقاوم للصدأ<br>
+    • خفيف الوزن مع قدرة عالية على التحمل<br>
+    • باش مقاوم للماء ومناسب للاستعمال اليومي<br><br>
+    📐 <strong>الأبعاد الدقيقة:</strong><br>
+    • الطول: 200 سم<br>
+    • العرض: 68 سم<br>
+    • الارتفاع: 66 سم
+  </p>
+</section>
+
+  <section class="contact">
+    <p>للمزيد من المعلومات اتصل بنا: 0796558933</p>
+
+  </section>
+
+  <footer>
+    &copy; 2025 شركتنا. جميع الحقوق محفوظة.
+  </footer>
+
+  <script>
+    // Slider logic with autoplay
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.querySelector('.prev');
+    const nextBtn = document.querySelector('.next');
+    let currentSlide = 0;
+    let slideInterval;
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+      });
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    function startAutoSlide() {
+      slideInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+    }
+
+    function stopAutoSlide() {
+      clearInterval(slideInterval);
+    }
+
+    prevBtn.addEventListener('click', () => {
+      stopAutoSlide();
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(currentSlide);
+      startAutoSlide();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      stopAutoSlide();
+      nextSlide();
+      startAutoSlide();
+    });
+
+    startAutoSlide();
+  </script>
+
+</body>
+
+
+</html>
